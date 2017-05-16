@@ -1,6 +1,6 @@
 QT -= core
 QT -= gui
-
+QMAKE_CXXFLAGS += -std=c++11
 CONFIG += c++11
 
 TARGET = SB
@@ -25,3 +25,4 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 HEADERS += \
     prepro.h
+
