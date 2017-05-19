@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <unordered_map>
 #include <vector>
 
 using namespace std;
@@ -16,7 +15,6 @@ struct Linha{
 };
 
 
-
 struct Erro{
     string linhaerro;
     string msgerro;
@@ -25,6 +23,7 @@ struct Erro{
         msgerro = msg;
     }
 };
+
 class PrePro
 {
 public:
@@ -33,15 +32,17 @@ public:
 
 private:
 
-    vector<vector<string>> token;
+    vector< vector<string> > token;
     ifstream arquivo;
     stringstream arqfonte;
     stringstream modificavel;
     bool findif();
     void removecoment();
-    void findtokens();
+    void removeEspaco();
+    void separatokens();
+    void imprimetokens();
     bool findequ();
-    unordered_map <string,int> equMap;
+    /*unordered_map <string,int> equMap;*/
     vector<Erro> erro;
 };
 

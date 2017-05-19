@@ -24,9 +24,9 @@ int main (int argc, char *argv[] ){
         prepro.run();
     }
 
-    else if (diretiva=="-o"){
+    /*else if (diretiva=="-o"){
 
-    }
+    }*/
 
     else{
         cout<<"Diretiva invalida"<<endl;

@@ -1,4 +1,5 @@
 #include "prepro.h"
+#include <stdlib.h> 
 
 PrePro::PrePro(char *nome_arquivo)
 {
@@ -16,11 +17,17 @@ PrePro::PrePro(char *nome_arquivo)
 //
 void PrePro::run(){
     removecoment();
-    findtokens();
+    removeEspaco();
+    separatokens();
+    imprimetokens();
     //bool achouIF = findif();
 }
 
-bool PrePro::findif(){
+/*bool PrePro::findif(){
+
+}*/
+
+void PrePro::imprimetokens(){
 
 }
 
@@ -57,29 +64,44 @@ void PrePro::removecoment()
     modificavel.str(""); // limpa arqtodo
     modificavel.clear(); // limpa `erros`
     modificavel.str(aux);// aqrtodo = aux
+    cout<<"noComents:"<<aux<<endl;
 }
 
-void PrePro::findtokens()
+void PrePro::removeEspaco()
 {
-    modificavel.seekg(0, ios::beg);
-    string buffer;
-    while (getline(modificavel, buffer)) {
-        token.push_back(vector<string>());
-        for(uint i = 0; i < buffer.size(); i++){
-            if(buffer[i] == ':' || buffer[i] == '+' || buffer[i] == ' '){
-                int pos = buffer.find(string(1, buffer[i]));
-                cout << buffer.substr(pos) << endl;
-                getchar();
-//                token.back().push_back(buffer.substr(pos));
-            }
-            if(buffer[i] != ' '){
-                string operador(1, buffer.at(i));
-                token.back().push_back(operador);
-                buffer.replace(buffer.begin(), buffer.begin()+i, "");
-            }
+    int pos_espaco;
+    int pos_tab;
+    int count=1; //recebe o numero de ocorrencias de espaços excedentes;
+    string buff;
+    string aux;
+    while (getline(modificavel,buff)) {
+	//cout<<"tam:"<<buff.size()<<"\n"<<endl;
+        pos_espaco = buff.find(" ",0);
+	pos_tab = buff.find("\t",0);
+        while(pos_tab!=string::npos){
+	    //cout<<"pos_tab:"<<pos_tab<<"\n"<<endl;
+	    buff.erase(pos_tab,1);
+	    pos_tab = buff.find("\t",pos_tab+1);
         }
+	
+        while((pos_espaco!=string::npos)){
+	    //cout<<"pos_espaco:"<<pos_espaco<<"\n"<<endl;
+	    if (pos_espaco==0){
+		buff.erase(pos_espaco,1);
+	    }
+	    while(buff[pos_espaco+1]==' '){
+	    	buff.erase(pos_espaco,1);
+	    }
+	    pos_espaco = buff.find(" ",pos_espaco+1);
+        }
+	
+        if(buff.size()!=0){ //retira as linhas vazias
+		aux.append(buff+"\n");
+	}
     }
-    for(auto line : token)
-        for(auto element : line)
-            cout << element << endl;
+    modificavel.str(""); // limpa arqtodo
+    modificavel.clear(); // limpa `erros`
+    modificavel.str(aux);// aqrtodo = aux
+    cout<<"noEspaços:"<<aux<<endl;
 }
+
